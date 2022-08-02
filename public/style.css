@@ -7,30 +7,24 @@
 }
 
 html {
-  box-sizing: border-box;
   font-family: "YouTube Noto",Roboto,Arial,Helvetica,sans-serif;
-  height: 100%;
 }
 
-*, *::before, *::after {
-  box-sizing: inherit;
-  margin: 0;
-  padding: 0;
-}
+
 
 body {
   height: 100%;
+  width: 100%;
 }
 
-.container {
+/* .container {
   width: 100%;
   height: 100%;
-}
+} */
 
 .video-container {
-  width: 800px;
+
   border-radius: 4px;
-  margin: 0 auto;
   position: relative;
   display: flex;
   flex-direction: column;

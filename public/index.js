@@ -5,12 +5,12 @@ let name = prompt("Enter your name");
 socket.emit("users", name);
 socket.on("user", (name) => {
   console.log(name);
-  console.log(`${name}:has joined the chat`);
+  console.log(`${name}:has joined the room`);
 });
 
 socket.on("leave", (name) => {
   console.log(name);
-  console.log(`${name}:has left the chat`);
+  console.log(`${name}:has left the room`);
 });
 
 // document.addEventListener("submit", (e) => {
@@ -315,15 +315,19 @@ socket.on("trackstatus", (data) => {
 let allusers;
 socket.on("allusers", (users) => {
   allusers = users;
+
+
+
 });
+
 
 function checkonlineusers() {
   let users = "";
   for (var key in allusers) {
-    users += allusers[key] + "\n";
+    users += "<b>"+allusers[key]+"</b></br>";
   }
 
-  if (users !== "") {
-    alert(users);
-  }
+
+ document.getElementById('a_users').innerHTML=users;
+     
 }
