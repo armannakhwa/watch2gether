@@ -50,7 +50,7 @@ app.get('/:room', (req, res) => {
   })
 })
 
-server.listen(3000)
+
 
 let acusers = {};
 io.on('connection', socket => {
@@ -120,3 +120,5 @@ function getUserRooms(socket) {
     return names
   }, [])
 }
+
+server.listen(process.env.PORT ||3000)
