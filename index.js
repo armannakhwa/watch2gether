@@ -1,7 +1,9 @@
 const express = require('express')
 const app = express()
-const server = require('http').Server(app)
-const io = require('socket.io')(server)
+
+
+var server = require("http").createServer(app);
+var io = require("socket.io")(server);
 
 app.set('views', './views')
 app.set('view engine', 'ejs')
@@ -50,41 +52,42 @@ app.get('/:room', (req, res) => {
   })
 })
 
+server.listen(process.env.PORT ||3000)
 
 
 let acusers = {};
-io.on('connection', socket => {
+io.on('connect', (sockets) => {
 
-  socket.on('new-user', (room, name) => {
-    socket.join(room)
-    rooms[room].users[socket.id] = name
+  sockets.on('new-user', (room, name) => {
+    sockets.join(room)
+    rooms[room].users[sockets.id] = name
 
-    acusers[socket.id] = {
+    acusers[sockets.id] = {
       name,
       room
     };
     io.to(room).emit("allusers", acusers);
 
-    socket.to(room).broadcast.emit('user-connected', name)
+    sockets.to(room).broadcast.emit('user-connected', name)
 
 
 
-    socket.on("play_pause", ({
+    sockets.on("play_pause", ({
       msg: msg,
       name: name
     }) => {
-      socket.to(room).broadcast.emit("ppstatus", {
+      sockets.to(room).broadcast.emit("ppstatus", {
         msg,
         name
       });
 
     });
 
-    socket.on("track", ({
+    sockets.on("track", ({
       msg: msg,
       name: name
     }) => {
-      socket.to(room).broadcast.emit("trackstatus", {
+      sockets.to(room).broadcast.emit("trackstatus", {
         msg,
         name
       });
@@ -92,10 +95,10 @@ io.on('connection', socket => {
 
     });
 
-    socket.on('send-chat-message', (room, message) => {
-      socket.to(room).broadcast.emit('chat-message', {
+    sockets.on('send-chat-message', (room, message) => {
+      sockets.to(room).broadcast.emit('chat-message', {
         message: message,
-        name: rooms[room].users[socket.id]
+        name: rooms[room].users[sockets.id]
       })
     })
 
@@ -106,19 +109,19 @@ io.on('connection', socket => {
 
 
 
-  socket.on('disconnect', () => {
-    getUserRooms(socket).forEach(room => {
-      socket.to(room).broadcast.emit('user-disconnected', rooms[room].users[socket.id])
-      delete rooms[room].users[socket.id]
+  sockets.on('disconnect', () => {
+    getUserRooms(sockets).forEach(room => {
+      sockets.to(room).broadcast.emit('user-disconnected', rooms[room].users[sockets.id])
+      delete rooms[room].users[sockets.id]
     })
   })
 })
 
-function getUserRooms(socket) {
+function getUserRooms(sockets) {
   return Object.entries(rooms).reduce((names, [name, room]) => {
-    if (room.users[socket.id] != null) names.push(name)
+    if (room.users[sockets.id] != null) names.push(name)
     return names
   }, [])
 }
 
-server.listen(process.env.PORT ||3000)
+
