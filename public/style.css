@@ -15,6 +15,12 @@ html {
 body {
   height: 100%;
   width: 100%;
+  background-color: red;
+  background-image:
+    radial-gradient(
+      rgb(48, 51, 247),
+      #295bb8
+    );
 }
 
 /* .container {

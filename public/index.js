@@ -1,6 +1,91 @@
-var socket = io();
+const socket = io()
+const messageContainer = document.getElementById('message-container')
+const roomContainer = document.getElementById('room-container')
+const messageForm = document.getElementById('send-container')
+const messageInput = document.getElementById('message-input')
 
-let name = prompt("Enter your name");
+
+
+if (messageForm != null) {
+  const name = prompt('What is your name?')
+  appendMessage('You joined')
+  activeusers(name + ' c');
+
+  socket.emit('new-user', roomName, name)
+
+
+  messageForm.addEventListener('submit', e => {
+    e.preventDefault()
+    const message = messageInput.value
+    appendMessage(`You: ${message}`)
+    socket.emit('send-chat-message', roomName, message)
+    messageInput.value = ''
+
+    document.getElementById('message-container').scrollTop = document.getElementById('message-container').scrollHeight + 100;
+
+  })
+}
+
+socket.on('room-created', room => {
+  const roomElement = document.createElement('div')
+  roomElement.innerText = room
+  const roomLink = document.createElement('a')
+  roomLink.href = `/${room}`
+  roomLink.innerText = 'join'
+  roomContainer.append(roomElement)
+  roomContainer.append(roomLink)
+})
+
+socket.on('chat-message', data => {
+  appendMessage(`${data.name}: ${data.message}`)
+  document.getElementById('message-container').scrollTop = document.getElementById('message-container').scrollHeight + 100;
+})
+
+function activeusers(names) {
+  document.getElementById('a_users').innerHTML += names;
+
+}
+
+socket.on('user-connected', name => {
+  appendMessage(`${name} connected`);
+  activeusers(name + ' c');
+
+})
+
+socket.on('user-disconnected', name => {
+  appendMessage(`${name} disconnected`);
+  activeusers(name + ' d');
+
+})
+
+
+
+
+socket.on("allusers", (users) => {
+  allusers = users;
+  console.log(allusers)
+});
+
+
+function checkonlineusers() {
+  let users = "";
+  for (var key in allusers) {
+    if (allusers[key].room == roomName) {
+      users += "<b>" + allusers[key].name + "</b></br>";
+    }
+  }
+
+
+  document.getElementById('a_users').innerHTML = users;
+
+}
+
+function appendMessage(message) {
+  const messageElement = document.createElement('div')
+  messageElement.innerText = message
+  messageContainer.append(messageElement)
+}
+
 
 socket.emit("users", name);
 socket.on("user", (name) => {
@@ -50,11 +135,17 @@ function togglePlay() {
   if (video.paused || video.ended) {
     video.play();
     let msg = "play";
-    socket.emit("play_pause", { msg, name });
+    socket.emit("play_pause", {
+      msg,
+      name
+    });
   } else {
     video.pause();
     let msg = "pause";
-    socket.emit("play_pause", { msg, name });
+    socket.emit("play_pause", {
+      msg,
+      name
+    });
   }
 }
 
@@ -102,13 +193,16 @@ function updateProgress() {
   progressBar.value = Math.floor(video.currentTime);
   //  console.log(progressBar.value)
   let msg = video.currentTime;
-  socket.emit("track", { msg, name });
+  socket.emit("track", {
+    msg,
+    name
+  });
 }
 
 function updateSeekTooltip(event) {
   const skipTo = Math.round(
     (event.offsetX / event.target.clientWidth) *
-      parseInt(event.target.getAttribute("max"), 10)
+    parseInt(event.target.getAttribute("max"), 10)
   );
   seek.setAttribute("data-seek", skipTo);
   const t = formatTime(skipTo);
@@ -119,9 +213,9 @@ function updateSeekTooltip(event) {
 
 
 function skipAhead(event) {
-  const skipTo = event.target.dataset.seek
-    ? event.target.dataset.seek
-    : event.target.value;
+  const skipTo = event.target.dataset.seek ?
+    event.target.dataset.seek :
+    event.target.value;
   video.currentTime = skipTo;
   progressBar.value = skipTo;
   seek.value = skipTo;
@@ -167,8 +261,7 @@ function toggleMute() {
 // the video is played or paused
 function animatePlayback() {
   playbackAnimation.animate(
-    [
-      {
+    [{
         opacity: 1,
         transform: "scale(1)",
       },
@@ -176,8 +269,7 @@ function animatePlayback() {
         opacity: 0,
         transform: "scale(1.3)",
       },
-    ],
-    {
+    ], {
       duration: 500,
     }
   );
@@ -237,7 +329,9 @@ function showControls() {
 
 
 function keyboardShortcuts(event) {
-  const { key } = event;
+  const {
+    key
+  } = event;
   switch (key) {
     case "k":
       togglePlay();
@@ -311,23 +405,3 @@ socket.on("trackstatus", (data) => {
     progressBar.value = Math.floor(data.msg);
   });
 });
-
-let allusers;
-socket.on("allusers", (users) => {
-  allusers = users;
-
-
-
-});
-
-
-function checkonlineusers() {
-  let users = "";
-  for (var key in allusers) {
-    users += "<b>"+allusers[key]+"</b></br>";
-  }
-
-
- document.getElementById('a_users').innerHTML=users;
-     
-}
