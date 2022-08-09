@@ -6,12 +6,23 @@ const messageInput = document.getElementById('message-input')
 
 
 
+let getalldetails;
+let  allusers;
+let vdourl="video.mp4";
+
+function start()
+{
+  vdourl=document.getElementById('vdourl').value;
+
+}
 if (messageForm != null) {
   const name = prompt('What is your name?')
+
   appendMessage('You joined')
   activeusers(name + ' c');
+  socket.emit('new-user', roomName, name,vdourl)
+  
 
-  socket.emit('new-user', roomName, name)
 
 
   messageForm.addEventListener('submit', e => {
@@ -28,12 +39,13 @@ if (messageForm != null) {
 
 socket.on('room-created', room => {
   const roomElement = document.createElement('div')
-  roomElement.innerText = room
+  roomElement.innerText = room.room;
   const roomLink = document.createElement('a')
-  roomLink.href = `/${room}`
+  roomLink.href = `/${room.room}`
   roomLink.innerText = 'join'
   roomContainer.append(roomElement)
   roomContainer.append(roomLink)
+
 })
 
 socket.on('chat-message', data => {
@@ -50,6 +62,7 @@ socket.on('user-connected', name => {
   appendMessage(`${name} connected`);
   activeusers(name + ' c');
 
+  
 })
 
 socket.on('user-disconnected', name => {
@@ -63,7 +76,12 @@ socket.on('user-disconnected', name => {
 
 socket.on("allusers", (users) => {
   allusers = users;
-  console.log(allusers)
+  console.log("++++++"+allusers);
+
+ 
+
+  document.getElementById('a_users').innerHTML = users;
+  
 });
 
 
@@ -72,14 +90,19 @@ function checkonlineusers() {
   for (var key in allusers) {
     if (allusers[key].room == roomName) {
       users += "<b>" + allusers[key].name + "</b></br>";
+      getalldetails=allusers[key];
     }
   }
-
 
   document.getElementById('a_users').innerHTML = users;
 
 }
 
+function sharelink()
+{
+  navigator.clipboard.writeText( window.location.href);
+  alert('invitation link copied');
+}
 function appendMessage(message) {
   const messageElement = document.createElement('div')
   messageElement.innerText = message
@@ -102,6 +125,26 @@ socket.on("leave", (name) => {
 //     e.preventDefault();
 
 // })
+
+
+setTimeout(()=>
+{
+
+  let uusers = "";
+  for (var key in allusers) {
+    if (allusers[key].room == roomName) {
+      uusers += "<b>" + allusers[key].name + "</b></br>";
+      var vurl =allusers[key].videourl;
+
+      var main_video = document.getElementById("main_video");
+
+      main_video.innerHTML = ` <video controls class="video" id="video" preload="metadata" poster="">
+          <source src=${vurl} type="video/mp4"></source>
+        </video>`;
+
+      console.log("#############"+vurl)
+    }
+  }
 
 // Select elements here
 const video = document.getElementById("video");
@@ -405,3 +448,5 @@ socket.on("trackstatus", (data) => {
     progressBar.value = Math.floor(data.msg);
   });
 });
+
+},1000);

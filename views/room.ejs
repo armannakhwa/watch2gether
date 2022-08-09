@@ -18,10 +18,16 @@
   </script>
   <script defer src="/socket.io/socket.io.js"></script>
   <style>
+
+  .fluid-container
+  {
+    margin: 10px;
+  }
+ 
     #mcontainer {
-      width: 70%;
       position: fixed;
-      bottom: 0%;
+    bottom: 0px;
+    width: 98%;
       background-color: rgb(205, 235, 124);
     }
 
@@ -36,7 +42,7 @@
     }
 
     #message-container {
-      max-height: 200px;
+      max-height: 150px;
       overflow: scroll;
     }
 
@@ -67,7 +73,7 @@
     </div>
   </div>
 
-  <div class="container" id="screen2">
+  <div class="fluid-container" id="screen2">
     <div class="row" id="vcontainer">
       <div class="col-md-12">
         <div class="video-container" id="video-container">
@@ -79,7 +85,7 @@
           </div>
 
           <!-- <video controls class="video" id="video" preload="metadata" poster="poster.jpg">
-        <source src="video.mp4" type="video/mp4"></source>
+        <source src="#" id="vsource" type="video/mp4"></source>
       </video> -->
 
           <div id="main_video"></div>
@@ -126,6 +132,11 @@
                     <use href="#pip"></use>
                   </svg>
                 </button>
+                
+                <button data-title="Share" onclick="sharelink()" class="button">
+                <i class="fa fa-share" style="font-size: 25px; color: white"></i>
+              </button>
+
 
                 <button data-title="Active Users" data-toggle="modal" onclick="checkonlineusers()"
                   data-target="#exampleModal" class="button" id="aud-button">
@@ -145,6 +156,7 @@
       </div>
     </div>
 
+    <div class="fluid-container " id="screen2">
     <div class="row" id="mcontainer">
       <div class="col-md-12">
         <div id="message-container"></div>
@@ -162,6 +174,7 @@
       </div>
     </div>
   </div>
+</div>
 
   <svg style="display: none">
     <defs>
@@ -224,13 +237,12 @@
     //     var screen2 = document.getElementById("screen2").style.display="block";
 
     // }
-    var vurl = "video.mp4";
 
-    var main_video = document.getElementById("main_video");
 
-    main_video.innerHTML = ` <video controls class="video" id="video" preload="metadata" poster="">
-      <source src=${vurl} type="video/mp4"></source>
-    </video>`;
+
+
+
+
   </script>
 
   <script defer src="index.js"></script>

@@ -24,6 +24,8 @@ app.get('/', (req, res) => {
   })
 })
 
+
+let vdourl;
 app.post('/room', (req, res) => {
   if (rooms[req.body.room] != null) {
     return res.redirect('/')
@@ -32,11 +34,12 @@ app.post('/room', (req, res) => {
     users: {}
   }
   let url = req.body.room;
-  console.log(req.body.room);
+  vdourl=req.body.vdourl;
+  console.log(vdourl);
   res.redirect(url)
 
   // Send message that new room was created
-  io.emit('room-created', req.body.room)
+  io.emit('room-created', {room:url,videourl:vdourl})
 
   // console.log(encodeURIComponent(req.body.vdourl))
 })
@@ -64,7 +67,8 @@ io.on('connect', (sockets) => {
 
     acusers[sockets.id] = {
       name,
-      room
+      room,
+      videourl:vdourl
     };
     io.to(room).emit("allusers", acusers);
 
