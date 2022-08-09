@@ -100,8 +100,15 @@ function checkonlineusers() {
 
 function sharelink()
 {
-  navigator.clipboard.writeText( window.location.href);
-  alert('invitation link copied');
+  navigator.clipboard.writeText(window.location.href);
+  navigator.clipboard
+      .writeText(window.location.href)
+      .then(() => {
+        alert('invitation link copied');
+      })
+      .catch(() => {
+        alert("something went wrong");
+      });
 }
 function appendMessage(message) {
   const messageElement = document.createElement('div')
