@@ -39,11 +39,11 @@ font-size: 50px;
 
   <form action="/room" method="POST">
   <div class="input-group mb-3">
-    <input type="text" class="form-control rounded-4" id="vdourl" name="vdourl"  value="https://mobstatus.com/wp-content/uploads/2022/07/Kesariya-Tera-Ishq-Hai-Piya-Song-Status-Video.mp4" placeholder="Paste Video Website URL" aria-label="Paste Video Website URL" aria-describedby="basic-addon2" required>
+    <input type="text" class="form-control rounded-4" id="vdourl" name="vdourl"  value="https://mobstatus.com/wp-content/uploads/2022/07/Kesariya-Tera-Ishq-Hai-Piya-Song-Status-Video.mp4" placeholder="Paste Video Website URL" aria-label="Paste Video Website URL" aria-describedby="basic-addon2" onkeyup="vdourlchecker()" required>
     <input name="room" id="roomcode" type="hidden" required>
    
     <div class="input-group-append">
-      <button type="submit" class="btn  btn-primary" onclick="start()">Go</button>
+      <button type="submit" id="Go" class="btn  btn-primary" onclick="start()">Go</button>
     </div>
   </div>
   </form>
@@ -89,7 +89,7 @@ console.log(makeid(5));
 document.getElementById('roomcode').value=(makeid(5));
 
    
-    
+
 
   </script>
 

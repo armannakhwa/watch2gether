@@ -4,7 +4,22 @@ const roomContainer = document.getElementById('room-container')
 const messageForm = document.getElementById('send-container')
 const messageInput = document.getElementById('message-input')
 
+function vdourlchecker()
+{
+  let vdourlc=document.getElementById('vdourl').value;
+ let vdoreg=/\.(mp4|mp3)$/.test(vdourlc);
 
+ if(vdoreg)
+ {
+  document.getElementById('Go').disabled = false;
+ }else{
+  document.getElementById('Go').disabled = true;
+  alert('Note:We are supporting only .mp4 URL')
+
+
+ }
+}
+    
 
 let getalldetails;
 let  allusers;
@@ -15,9 +30,10 @@ function start()
   vdourl=document.getElementById('vdourl').value;
 
 }
+
 if (messageForm != null) {
   const name = prompt('What is your name?')
-
+document.getElementById('userdetail').innerHTML="<b>You:</b>"+name+"";
   appendMessage('You joined')
   activeusers(name + ' c');
   socket.emit('new-user', roomName, name,vdourl)
@@ -77,9 +93,6 @@ socket.on('user-disconnected', name => {
 socket.on("allusers", (users) => {
   allusers = users;
   console.log("++++++"+allusers);
-
- 
-
   document.getElementById('a_users').innerHTML = users;
   
 });
@@ -90,7 +103,6 @@ function checkonlineusers() {
   for (var key in allusers) {
     if (allusers[key].room == roomName) {
       users += "<b>" + allusers[key].name + "</b></br>";
-      getalldetails=allusers[key];
     }
   }
 
