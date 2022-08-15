@@ -30,9 +30,9 @@ function start()
   vdourl=document.getElementById('vdourl').value;
 
 }
-
+let name;
 if (messageForm != null) {
-  const name = prompt('What is your name?')
+ name = prompt('What is your name?')
 document.getElementById('userdetail').innerHTML="<b>You:</b>"+name+"";
   appendMessage('You joined')
   activeusers(name + ' c');
@@ -446,15 +446,29 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 document.addEventListener("keyup", keyboardShortcuts);
+document.getElementById('ndata').style.display="none";
 
 socket.on("ppstatus", (data) => {
+  document.getElementById('ndata').style.display="block";
+
   console.log(data);
+
+
+
   if (data.msg == "play") {
     video.play();
+  document.getElementById('ndata').innerHTML="<b>"+data.name+"</b> has play this video";
+
   }
   if (data.msg == "pause") {
     video.pause();
+  document.getElementById('ndata').innerHTML="<b>"+data.name+"</b> has pause this video";
+
   }
+
+  setTimeout(()=>{
+    document.getElementById('ndata').style.display="none";
+  },4000)
 });
 
 socket.on("trackstatus", (data) => {

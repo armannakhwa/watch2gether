@@ -19,6 +19,19 @@
   <script defer src="/socket.io/socket.io.js"></script>
   <style>
 
+#notification{
+  position: absolute;
+  bottom: 0px;
+width:96%;
+padding: 12px;
+text-align: center;
+}
+
+#ndata{
+  background-color: rgb(12, 240, 145);
+padding: 12px;
+font-size: 20px;
+}
   .fluid-container
   {
     margin: 10px;
@@ -233,6 +246,8 @@
     </defs>
   </svg>
 
+
+  <div id="notification"><span id="ndata">Hello</span></div>
   <script>
     // var vurl = prompt("Enter Video URL", 'video.mp4');
     //  var vurl="video.mp4";
