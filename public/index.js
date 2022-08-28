@@ -243,6 +243,8 @@ function initializeVideo() {
 }
 
 
+
+
 function updateTimeElapsed() {
   const time = formatTime(Math.round(video.currentTime));
   timeElapsed.innerText = `${time.minutes}:${time.seconds}`;
@@ -260,6 +262,12 @@ function updateProgress() {
     name
   });
 }
+
+socket.on("trackstatus", (data) => {
+  console.log(data);
+let vdotime=data.msg;
+console.log(vdotime);
+  });
 
 function updateSeekTooltip(event) {
   const skipTo = Math.round(
@@ -471,15 +479,6 @@ socket.on("ppstatus", (data) => {
   },4000)
 });
 
-socket.on("trackstatus", (data) => {
-  console.log(data);
 
-  video.addEventListener("timeupdate", () => {
-    video.addEventListener("timeupdate", updateTimeElapsed);
-
-    seek.value = Math.floor(data.msg);
-    progressBar.value = Math.floor(data.msg);
-  });
-});
 
 },1000);

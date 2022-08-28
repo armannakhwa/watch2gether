@@ -55,7 +55,9 @@ app.get('/:room', (req, res) => {
   })
 })
 
-server.listen(process.env.PORT ||3000)
+server.listen(process.env.PORT ||3000,()=>{
+  console.log("Server is running")
+})
 
 
 let acusers = {};
@@ -127,5 +129,3 @@ function getUserRooms(sockets) {
     return names
   }, [])
 }
-
-

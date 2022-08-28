@@ -19,6 +19,7 @@
   <script defer src="/socket.io/socket.io.js"></script>
   <style>
 
+
 #notification{
   position: absolute;
   bottom: 0px;
@@ -27,10 +28,20 @@ padding: 12px;
 text-align: center;
 }
 
+@keyframes popUpEntrada {
+  0%{opacity: 1;
+  }
+  75%{opacity: 1;}
+  100%{opacity: 0;}
+}
+
 #ndata{
   background-color: rgb(12, 240, 145);
 padding: 12px;
-font-size: 20px;
+font-size: 25px;
+border-radius: 12px;
+animation: popUpEntrada 2s;
+
 }
   .fluid-container
   {
@@ -41,11 +52,11 @@ font-size: 20px;
       position: fixed;
     bottom: 0px;
     width: 98%;
-      background-color: rgb(205, 235, 124);
+      background-color: rgb(111, 181, 238);
     }
 
     #vcontainer video {
-      height: 60vh;
+      height: 50vh;
       background-color:black;
     }
 
@@ -60,10 +71,12 @@ font-size: 20px;
     }
 
     #message-container div {
-      background-color: rgb(238, 102, 102);
+      background-color: rgb(181, 242, 247);
       padding: 10px;
       margin: 10px;
     }
+
+
   </style>
 </head>
 
@@ -86,18 +99,29 @@ font-size: 20px;
     </div>
   </div>
 
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand mx-4" style="color:rgb(89, 0, 255);" href="#">Watch2gether</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <button class="mx-4 btn btn-danger"> <div id="userdetail"></div></button>
+        </li>
+      </ul>
+
+      <div class="form-inline my-2 my-lg-0">
+        <a id="createnew" class="mx-4 mr-sm-2 text-light" href="./"><button class="btn btn-success">Create Your Room</button><span class="sr-only">(current)</span></a>
+      </div>
+    </div>
+  </nav>
+
   <div class="fluid-container" id="screen2">
     <div class="row" id="vcontainer">
       <div class="col-md-12">
-
-        <div class="row bg-danger text-center">
-          <div class="col-md-6">
-        <div id="userdetail"></div>
-          </div>
-          <div class="col-md-6">
-        <a id="createnew" class="text-light" href="./"><button class="btn btn-success">Create Your Room</button></a>
-      </div>
-        </div>
         
         <div class="video-container" id="video-container">
           <div class="playback-animation" id="playback-animation">
