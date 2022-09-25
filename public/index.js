@@ -476,12 +476,12 @@ socket.on("ppstatus", (data) => {
 
   if (data.msg == "play") {
     video.play();
-  document.getElementById('ndata').innerHTML="<b>"+data.name+"</b> has play this video";
+  document.getElementById('ndata').innerHTML="<b>"+data.name+"</b> has played this video";
 
   }
   if (data.msg == "pause") {
     video.pause();
-  document.getElementById('ndata').innerHTML="<b>"+data.name+"</b> has pause this video";
+  document.getElementById('ndata').innerHTML="<b>"+data.name+"</b> has paused this video";
 
   }
 
