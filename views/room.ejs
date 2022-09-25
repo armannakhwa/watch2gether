@@ -109,12 +109,18 @@ animation: popUpEntrada 2s;
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <button class="mx-4 btn btn-danger"> <div id="userdetail"></div></button>
+          <button class="mx-4 btn btn-secondary"> <div id="userdetail"></div> </button>
+        </li>
+        <li class="nav-item active">
+          <button class="mx-4 btn btn-primary"> Room Code:<%= roomName %> </button>
         </li>
       </ul>
 
       <div class="form-inline my-2 my-lg-0">
         <a id="createnew" class="mx-4 mr-sm-2 text-light" href="./"><button class="btn btn-success">Create Your Room</button><span class="sr-only">(current)</span></a>
+      </div>
+      <div class="form-inline my-2 my-lg-0">
+        <a id="createnew" class="mx-4 mr-sm-2 text-light" href="./"><button class="btn btn-danger">Logout</button><span class="sr-only">(current)</span></a>
       </div>
     </div>
   </nav>

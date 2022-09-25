@@ -9,15 +9,26 @@ function vdourlchecker()
   let vdourlc=document.getElementById('vdourl').value;
  let vdoreg=/\.(mp4|mp3)$/.test(vdourlc);
 
+ if(vdourlc.length>5)
+ {
  if(vdoreg)
  {
   document.getElementById('Go').disabled = false;
  }else{
   document.getElementById('Go').disabled = true;
   alert('Note:We are supporting only .mp4 URL')
-
-
  }
+}
+if(vdourlc.length==5)
+{
+  document.getElementById('Go').disabled = false;
+  // document.location.href="http://localhost:3000/hii"+vdourlc;
+  
+}
+else{
+  document.getElementById('Go').disabled = true;
+
+}
 }
     
 

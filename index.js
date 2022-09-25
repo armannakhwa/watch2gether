@@ -27,6 +27,12 @@ app.get('/', (req, res) => {
 
 let vdourl;
 app.post('/room', (req, res) => {
+  if(req.body.vdourl.length==5)
+  {
+    return res.redirect(req.body.vdourl)
+
+  }
+else{
   if (rooms[req.body.room] != null) {
     return res.redirect('/')
   }
@@ -42,6 +48,7 @@ app.post('/room', (req, res) => {
   io.emit('room-created', {room:url,videourl:vdourl})
 
   // console.log(encodeURIComponent(req.body.vdourl))
+}
 })
 
 app.get('/:room', (req, res) => {

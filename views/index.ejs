@@ -41,16 +41,22 @@ font-size: 50px;
   
 <div class="container" id="screen1">
   <center><img src="./logo.png"/></center>
-  <h4 class="h_text">Create <br> Watch2gether <br>Room</h4>
+  <h4 class="h_text">Create <br> Watch2gether <br>Room or Type Room code</h4>
 
   <form action="/room" method="POST">
   <div class="input-group mb-3">
-    <input type="text" class="form-control rounded-4" id="vdourl" name="vdourl"  value="https://mobstatus.com/wp-content/uploads/2022/07/Kesariya-Tera-Ishq-Hai-Piya-Song-Status-Video.mp4" placeholder="Paste Video Website URL" aria-label="Paste Video Website URL" aria-describedby="basic-addon2" onkeyup="vdourlchecker()" required>
+    <input type="text" class="form-control rounded-4" id="vdourl" name="vdourl"  value="https://mobstatus.com/wp-content/uploads/2022/07/Kesariya-Tera-Ishq-Hai-Piya-Song-Status-Video.mp4" placeholder="Paste Video Website URL or Type Room code" aria-label="Paste Video Website URL" aria-describedby="basic-addon2" onkeyup="vdourlchecker()" required>
     <input name="room" id="roomcode" type="hidden" required>
    
-    <div class="input-group-append">
+    <div class="input-group-append" id="videourlbutton">
       <button type="submit" id="Go" class="btn  btn-primary" onclick="start()">Go</button>
     </div>
+    <!-- <div class="input-group-append" id="roomcodebutton">
+      <a id="roomcodebuttonlink" target="_blank"><button type="button" id="Go" class="btn  btn-primary">Go2</button></a>
+    </div> -->
+    <br>
+
+
   </div>
   </form>
 
