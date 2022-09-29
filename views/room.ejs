@@ -18,46 +18,59 @@
   </script>
   <script defer src="/socket.io/socket.io.js"></script>
   <style>
+    #notification {
+      position: absolute;
+      bottom: 0px;
+      width: 96%;
+      padding: 12px;
+      text-align: center;
+    }
 
+    @keyframes popUpEntrada {
+      0% {
+        opacity: 1;
+      }
 
-#notification{
-  position: absolute;
-  bottom: 0px;
-width:96%;
-padding: 12px;
-text-align: center;
-}
+      75% {
+        opacity: 1;
+      }
 
-@keyframes popUpEntrada {
-  0%{opacity: 1;
-  }
-  75%{opacity: 1;}
-  100%{opacity: 0;}
-}
+      100% {
+        opacity: 0;
+      }
+    }
 
-#ndata{
-  background-color: rgb(12, 240, 145);
-padding: 12px;
-font-size: 25px;
-border-radius: 12px;
-animation: popUpEntrada 2s;
+    #ndata {
+      background-color: rgb(12, 240, 145);
+      padding: 12px;
+      font-size: 25px;
+      border-radius: 12px;
+      animation: popUpEntrada 2s;
 
-}
-  .fluid-container
+    }
+
+    /* .fluid-container
   {
     margin: 10px;
-  }
- 
-    #mcontainer {
+  } */
+    #screen1 {
+      margin: 15px;
+    }
+
+    #screen2 {
       position: fixed;
-    bottom: 0px;
-    width: 98%;
-      background-color: rgb(111, 181, 238);
+      bottom: 0px;
+      width: 100%;
+      right: 2px;
+    }
+
+    #mcontainer {
+      background-color: black
     }
 
     #vcontainer video {
       height: 50vh;
-      background-color:black;
+      background-color: black;
     }
 
     .p-bottom {
@@ -66,21 +79,37 @@ animation: popUpEntrada 2s;
     }
 
     #message-container {
-      max-height: 150px;
+      max-height: 185px;
       overflow: scroll;
     }
 
     #message-container div {
-      background-color: rgb(181, 242, 247);
+      color: white;
+      font-weight: bold;
       padding: 10px;
-      margin: 10px;
+
     }
 
+    #roomscreen {
+      background-color: black
+    }
 
+    @media only screen and (max-width: 600px) {
+      #pip-button {
+        display: none;
+      }
+
+      /* #nav{
+    display: none;
+  } */
+      .right-controls {
+        width: 150px;
+      }
+    }
   </style>
 </head>
 
-<body>
+<body id="roomscreen">
   <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -100,16 +129,19 @@ animation: popUpEntrada 2s;
   </div>
 
 
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand mx-4" style="color:rgb(89, 0, 255);" href="#">Watch2gether</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="nav">
+    <a class="navbar-brand mx-4" style="color:white;" href="#">Watch2gether</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-  
+
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <button class="mx-4 btn btn-secondary"> <div id="userdetail"></div> </button>
+          <button class="mx-4 btn btn-secondary">
+            <div id="userdetail"></div>
+          </button>
         </li>
         <li class="nav-item active">
           <button class="mx-4 btn btn-primary"> Room Code:<%= roomName %> </button>
@@ -117,18 +149,20 @@ animation: popUpEntrada 2s;
       </ul>
 
       <div class="form-inline my-2 my-lg-0">
-        <a id="createnew" class="mx-4 mr-sm-2 text-light" href="./"><button class="btn btn-success">Create Your Room</button><span class="sr-only">(current)</span></a>
+        <a id="createnew" class="mx-4 mr-sm-2 text-light" href="./"><button class="btn btn-success">Create Your
+            Room</button><span class="sr-only">(current)</span></a>
       </div>
       <div class="form-inline my-2 my-lg-0">
-        <a id="createnew" class="mx-4 mr-sm-2 text-light" href="./"><button class="btn btn-danger">Logout</button><span class="sr-only">(current)</span></a>
+        <a id="createnew" class="mx-4 mr-sm-2 text-light" href="./"><button class="btn btn-danger">Logout</button><span
+            class="sr-only">(current)</span></a>
       </div>
     </div>
   </nav>
 
-  <div class="fluid-container" id="screen2">
+  <div class="fluid-container" id="screen1">
     <div class="row" id="vcontainer">
       <div class="col-md-12">
-        
+
         <div class="video-container" id="video-container">
           <div class="playback-animation" id="playback-animation">
             <svg class="playback-icons">
@@ -184,10 +218,10 @@ animation: popUpEntrada 2s;
                     <use href="#pip"></use>
                   </svg>
                 </button>
-                
+
                 <button data-title="Share" onclick="sharelink()" class="button">
-                <i class="fa fa-share" style="font-size: 25px; color: white"></i>
-              </button>
+                  <i class="fa fa-share" style="font-size: 25px; color: white"></i>
+                </button>
 
 
                 <button data-title="Active Users" data-toggle="modal" onclick="checkonlineusers()"
@@ -209,13 +243,13 @@ animation: popUpEntrada 2s;
     </div>
 
     <div class="fluid-container " id="screen2">
-    <div class="row" id="mcontainer">
-      <div class="col-md-12">
+      <div class="row" id="mcontainer">
         <div id="message-container"></div>
-        <form id="send-container">
+        <br>
+        <form id="send-container" autocomplete="off">
           <div class="input-group mb-3">
             <input type="text" type="text" id="message-input" class="form-control" placeholder="Message"
-              aria-label="Message" aria-describedby="basic-addon2" />
+              aria-label="Message" aria-describedby="basic-addon2" required />
             <div class="input-group-append">
               <button type="submit" id="send-button" class="btn btn-primary" type="button">
                 Send
@@ -226,7 +260,6 @@ animation: popUpEntrada 2s;
       </div>
     </div>
   </div>
-</div>
 
   <svg style="display: none">
     <defs>
@@ -291,12 +324,6 @@ animation: popUpEntrada 2s;
     //     var screen2 = document.getElementById("screen2").style.display="block";
 
     // }
-
-
-
-
-
-
   </script>
 
   <script defer src="index.js"></script>

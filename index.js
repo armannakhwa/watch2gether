@@ -27,28 +27,29 @@ app.get('/', (req, res) => {
 
 let vdourl;
 app.post('/room', (req, res) => {
-  if(req.body.vdourl.length==5)
-  {
+  if (req.body.vdourl.length == 5) {
     return res.redirect(req.body.vdourl)
 
-  }
-else{
-  if (rooms[req.body.room] != null) {
-    return res.redirect('/')
-  }
-  rooms[req.body.room] = {
-    users: {}
-  }
-  let url = req.body.room;
-  vdourl=req.body.vdourl;
-  console.log(vdourl);
-  res.redirect(url)
+  } else {
+    if (rooms[req.body.room] != null) {
+      return res.redirect('/')
+    }
+    rooms[req.body.room] = {
+      users: {}
+    }
+    let url = req.body.room;
+    vdourl = req.body.vdourl;
+    console.log(vdourl);
+    res.redirect(url)
 
-  // Send message that new room was created
-  io.emit('room-created', {room:url,videourl:vdourl})
+    // Send message that new room was created
+    io.emit('room-created', {
+      room: url,
+      videourl: vdourl
+    })
 
-  // console.log(encodeURIComponent(req.body.vdourl))
-}
+    // console.log(encodeURIComponent(req.body.vdourl))
+  }
 })
 
 app.get('/:room', (req, res) => {
@@ -62,7 +63,7 @@ app.get('/:room', (req, res) => {
   })
 })
 
-server.listen(process.env.PORT ||3000,()=>{
+server.listen(process.env.PORT || 3000, () => {
   console.log("Server is running")
 })
 
@@ -77,7 +78,7 @@ io.on('connect', (sockets) => {
     acusers[sockets.id] = {
       name,
       room,
-      videourl:vdourl
+      videourl: vdourl
     };
     io.to(room).emit("allusers", acusers);
 
@@ -87,26 +88,28 @@ io.on('connect', (sockets) => {
 
     sockets.on("play_pause", ({
       msg: msg,
-      name: name
+      name: name,
+      vt
     }) => {
       sockets.to(room).broadcast.emit("ppstatus", {
         msg,
-        name
+        name,
+        vt
       });
 
     });
 
-    sockets.on("track", ({
-      msg: msg,
-      name: name
-    }) => {
-      sockets.to(room).broadcast.emit("trackstatus", {
-        msg,
-        name
-      });
-      console.log(msg)
+    // sockets.on("track", ({
+    //   msg: msg,
+    //   name: name
+    // }) => {
+    //   sockets.to(room).broadcast.emit("trackstatus", {
+    //     msg,
+    //     name
+    //   });
+    //   console.log(msg)
 
-    });
+    // });
 
     sockets.on('send-chat-message', (room, message) => {
       sockets.to(room).broadcast.emit('chat-message', {
