@@ -18,12 +18,7 @@ function vdourlchecker() {
   }
   if (vdourlc.length == 5) {
     document.getElementById('Go').disabled = false;
-    // document.location.href="http://localhost:3000/hii"+vdourlc;
-
-  } else {
-    document.getElementById('Go').disabled = true;
-
-  }
+  } 
 }
 
 
@@ -97,7 +92,7 @@ socket.on('user-disconnected', name => {
 
 socket.on("allusers", (users) => {
   allusers = users;
-  console.log("++++++" + allusers);
+  // console.log("++++++" + allusers);
   document.getElementById('a_users').innerHTML = users;
 
 });
@@ -144,12 +139,6 @@ socket.on("leave", (name) => {
   console.log(name);
   console.log(`${name}:has left the room`);
 });
-
-// document.addEventListener("submit", (e) => {
-//     e.preventDefault();
-
-// })
-
 
 setTimeout(() => {
 
@@ -268,15 +257,6 @@ setTimeout(() => {
   function updateProgress() {
     seek.value = Math.floor(video.currentTime);
     progressBar.value = Math.floor(video.currentTime);
-
-    // //  console.log(progressBar.value)
-    // let msg = video.currentTime;
-    // socket.emit("track", {
-    //   msg,
-    //   name
-    // });
-
-
   }
 
 
@@ -298,6 +278,7 @@ setTimeout(() => {
 
 
   function skipAhead(event) {
+    togglePlay();
     const skipTo = event.target.dataset.seek ?
       event.target.dataset.seek :
       event.target.value;
@@ -486,11 +467,6 @@ setTimeout(() => {
     if (data.msg == "play") {
       video.play();
       document.getElementById('ndata').innerHTML = "<b>" + data.name + "</b> has played this video";
-      // let vdotime=0;
-      // socket.on("trackstatus", (data) => {
-      //   vdotime=data.msg;
-      //   video.currentTime= Math.floor(vdotime);
-      // });
 
     }
     if (data.msg == "pause") {

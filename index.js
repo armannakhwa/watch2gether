@@ -48,7 +48,6 @@ app.post('/room', (req, res) => {
       videourl: vdourl
     })
 
-    // console.log(encodeURIComponent(req.body.vdourl))
   }
 })
 
@@ -99,17 +98,6 @@ io.on('connect', (sockets) => {
 
     });
 
-    // sockets.on("track", ({
-    //   msg: msg,
-    //   name: name
-    // }) => {
-    //   sockets.to(room).broadcast.emit("trackstatus", {
-    //     msg,
-    //     name
-    //   });
-    //   console.log(msg)
-
-    // });
 
     sockets.on('send-chat-message', (room, message) => {
       sockets.to(room).broadcast.emit('chat-message', {
@@ -121,14 +109,11 @@ io.on('connect', (sockets) => {
   })
 
 
-
-
-
-
   sockets.on('disconnect', () => {
     getUserRooms(sockets).forEach(room => {
       sockets.to(room).broadcast.emit('user-disconnected', rooms[room].users[sockets.id])
       delete rooms[room].users[sockets.id]
+      delete acusers[sockets.id];
     })
   })
 })
